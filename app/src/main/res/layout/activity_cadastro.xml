@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorOrangeBackground"
+    android:padding="16dp"
+    tools:context=".ui.activity.CadastroActivity">
+
+
+    <EditText
+        android:id="@+id/activity_cadastro_edt_nome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapWords"
+        android:hint="@string/nome"
+        android:contentDescription="@string/nome"/>
+
+    <EditText
+        android:id="@+id/activity_cadastro_edt_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email"/>
+
+    <EditText
+        android:id="@+id/activity_cadastro_edt_senha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="@string/senha"
+        android:contentDescription="@string/senha"/>
+
+    <EditText
+        android:id="@+id/activity_cadastro_edt_cpf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/cpf"
+        android:inputType="number"
+        android:contentDescription="@string/cpf"/>
+
+</LinearLayout>

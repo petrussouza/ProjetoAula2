@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Projeto Aula 2</string>
+    <string name="cadastre_se">Cadastre-se</string>
+    <string name="entrar">Entrar</string>
+    <string name="nome">Nome</string>
+    <string name="email">E-mail</string>
+    <string name="senha">Senha</string>
+    <string name="cpf">CPF</string>
+
+    <string name="titulo_nova_conta">Nova Conta</string>
+    <string name="titulo_resumo_cadastro">Resumo Cadastro</string>
+    <string name="titulo_login">Login</string>
+    <string name="titulo_resumo_login">Resumo Login</string>
+
+    <string name="msg_salvando">Salvando...</string>
+    <string name="msg_efetuando_login">Efetuando Login...</string>
+</resources>
