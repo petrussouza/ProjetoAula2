@@ -13,6 +13,7 @@ import school.cesar.projetoaula2.extension.emBranco
 import school.cesar.projetoaula2.extension.isEmailValido
 import school.cesar.projetoaula2.extension.minCaracteres
 import school.cesar.projetoaula2.model.Usuario
+import school.cesar.projetoaula2.util.Mask
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -41,6 +42,7 @@ class CadastroActivity : AppCompatActivity() {
         edtEmail = findViewById<EditText>(R.id.activity_cadastro_edt_email)
         edtSenha = findViewById<EditText>(R.id.activity_cadastro_edt_senha)
         edtCpf = findViewById<EditText>(R.id.activity_cadastro_edt_cpf)
+        edtCpf.addTextChangedListener(Mask.mask("###.###.###-##", edtCpf))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
