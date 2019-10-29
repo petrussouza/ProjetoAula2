@@ -45,11 +45,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun validarForm(): Boolean{
         var valido = true
-        if(!edtEmail.text.toString().isEmailValido()){
+        if(!edtEmail.text.toString().trim().isEmailValido()){
             edtEmail.error = getString(R.string.msg_email_invalido)
             valido = false
         }
-        if(edtSenha.text.toString().length < Usuario.TAMANHO_MINIMO_SENHA){
+        if(edtSenha.text.toString().trim().length < Usuario.TAMANHO_MINIMO_SENHA){
             edtSenha.error = getString(R.string.msg_minimo_de_6_caracteres)
             valido = false
         }
