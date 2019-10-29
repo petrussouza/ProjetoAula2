@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Projeto Aula 2</string>
     <string name="cadastre_se">Cadastre-se</string>
+    <string name="cadastrar">Cadastrar</string>
     <string name="entrar">Entrar</string>
     <string name="nome">Nome</string>
     <string name="email">E-mail</string>
@@ -14,4 +15,9 @@
 
     <string name="msg_salvando">Salvando...</string>
     <string name="msg_efetuando_login">Efetuando Login...</string>
+    <string name="msg_campo_obrigatorio">Campo obrigatório!</string>
+    <string name="msg_email_invalido">Email inválido!</string>
+    <string name="msg_minimo_de_6_caracteres">Mínimo de 6 caracteres</string>
+    <string name="msg_cpf_invalido">Cpf inválido!</string>
+
 </resources>

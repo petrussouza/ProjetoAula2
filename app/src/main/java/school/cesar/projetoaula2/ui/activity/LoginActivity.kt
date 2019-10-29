@@ -9,9 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import school.cesar.projetoaula2.R
-import school.cesar.projetoaula2.extension.emBranco
 import school.cesar.projetoaula2.extension.isEmailValido
-import school.cesar.projetoaula2.extension.minCaracteres
 import school.cesar.projetoaula2.model.Usuario
 
 class LoginActivity : AppCompatActivity() {
@@ -46,10 +44,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun validarForm(): Boolean{
-        if(edtEmail.isEmailValido() and edtSenha.minCaracteres(6)){
-            return true
+        var valido = true
+        if(!edtEmail.text.toString().isEmailValido()){
+            edtEmail.error = getString(R.string.msg_email_invalido)
+            valido = false
         }
-        return false
+        if(edtSenha.text.toString().length < Usuario.TAMANHO_MINIMO_SENHA){
+            edtSenha.error = getString(R.string.msg_minimo_de_6_caracteres)
+            valido = false
+        }
+        return valido
     }
 
     private fun configuraBotaoEntrar(){

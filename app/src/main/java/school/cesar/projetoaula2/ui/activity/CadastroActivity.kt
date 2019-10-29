@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import school.cesar.projetoaula2.R
-import school.cesar.projetoaula2.extension.emBranco
 import school.cesar.projetoaula2.extension.isEmailValido
-import school.cesar.projetoaula2.extension.minCaracteres
 import school.cesar.projetoaula2.model.Usuario
+import school.cesar.projetoaula2.util.CPFUtil
 import school.cesar.projetoaula2.util.Mask
 
 class CadastroActivity : AppCompatActivity() {
@@ -27,6 +27,8 @@ class CadastroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cadastro)
         configuraActionBar()
         carregarCamposFormulario()
+        defineMascaraCpf()
+        configuraBotaoCadastrar()
     }
 
     private fun configuraActionBar(){
@@ -42,37 +44,49 @@ class CadastroActivity : AppCompatActivity() {
         edtEmail = findViewById<EditText>(R.id.activity_cadastro_edt_email)
         edtSenha = findViewById<EditText>(R.id.activity_cadastro_edt_senha)
         edtCpf = findViewById<EditText>(R.id.activity_cadastro_edt_cpf)
+    }
+
+
+    fun defineMascaraCpf(){
         edtCpf.addTextChangedListener(Mask.mask("###.###.###-##", edtCpf))
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_activity_cadastro, menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_cadastro_menu_salvar -> {
+    private fun configuraBotaoCadastrar(){
+        val btnCadastrar = findViewById<Button>(R.id.activity_cadastro_btn_cadastrar)
+        btnCadastrar.setOnClickListener{
             if(validarForm()) {
                 Toast.makeText(this, getString(R.string.msg_salvando), Toast.LENGTH_SHORT).show()
                 val usuario = preencheUsuario()
                 criarConta(usuario)
             }
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
         }
     }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
 
     private fun validarForm(): Boolean{
-        if(!edtNome.emBranco() and edtEmail.isEmailValido() and edtSenha.minCaracteres(6) and edtCpf.minCaracteres(11)){
-            return true
+        var valido = true
+
+        if(edtNome.text.toString().isEmpty()){
+            edtNome.error = getString(R.string.msg_campo_obrigatorio)
+            valido = false;
         }
-        return false
+        if(!edtEmail.text.toString().isEmailValido()){
+            edtEmail.error = getString(R.string.msg_email_invalido)
+            valido = false
+        }
+        if(edtSenha.text.toString().length < Usuario.TAMANHO_MINIMO_SENHA){
+            edtSenha.error = getString(R.string.msg_minimo_de_6_caracteres)
+            valido = false
+        }
+        if(!CPFUtil.validarCPF(edtCpf.text.toString())){
+            edtCpf.error = getString(R.string.msg_cpf_invalido)
+            valido = false
+        }
+        return valido
     }
 
     private fun preencheUsuario(): Usuario {

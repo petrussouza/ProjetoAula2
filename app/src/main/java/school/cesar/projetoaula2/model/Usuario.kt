@@ -6,4 +6,7 @@ data class Usuario (var nome: String,
                     var email: String,
                     var senha: String,
                     val cpf: String): Serializable{
+    companion object{
+        val TAMANHO_MINIMO_SENHA = 6
+    }
 }

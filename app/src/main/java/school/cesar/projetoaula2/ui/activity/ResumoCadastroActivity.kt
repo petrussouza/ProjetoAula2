@@ -2,7 +2,6 @@ package school.cesar.projetoaula2.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
 import android.widget.TextView
 import school.cesar.projetoaula2.R
 import school.cesar.projetoaula2.model.Usuario
@@ -43,7 +42,7 @@ class ResumoCadastroActivity : AppCompatActivity() {
 
     private fun getExtraIntent(){
         if(intent.hasExtra(EXTRA_USUARIO)){
-            usuario = intent.getSerializableExtra(EXTRA_USUARIO) as? Usuario
+            usuario = intent.getSerializableExtra(EXTRA_USUARIO) as Usuario
         }
     }
 
