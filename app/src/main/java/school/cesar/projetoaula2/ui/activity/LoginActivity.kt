@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         btnEntrar.setOnClickListener{
             if(validarForm()) {
                 Toast.makeText(this, getString(R.string.msg_efetuando_login), Toast.LENGTH_SHORT).show()
-                efetuarLogin(edtEmail.text.toString(), edtSenha.text.toString())
+                efetuarLogin(edtEmail.text.toString().trim(), edtSenha.text.toString().trim())
             }
         }
     }
