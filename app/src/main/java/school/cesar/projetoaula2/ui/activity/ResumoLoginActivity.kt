@@ -1,7 +1,9 @@
 package school.cesar.projetoaula2.ui.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import school.cesar.projetoaula2.R
@@ -9,16 +11,10 @@ import school.cesar.projetoaula2.model.Usuario
 
 class ResumoLoginActivity : AppCompatActivity() {
 
-    var email: String? = null
-    var senha: String? = null
+    var usuario: Usuario? = null
 
     private lateinit var txtEmail: TextView
     private lateinit var txtSenha: TextView
-
-    companion object{
-        var EXTRA_EMAIL = "email"
-        var EXTRA_SENHA = "senha"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +23,7 @@ class ResumoLoginActivity : AppCompatActivity() {
         carregarCamposTela()
         getExtraIntent()
         exibeDadosLogin()
+        configuraBotaoListaTarefas()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -43,9 +40,8 @@ class ResumoLoginActivity : AppCompatActivity() {
     }
 
     private fun getExtraIntent(){
-        if(intent.hasExtra(EXTRA_EMAIL) && intent.hasExtra(EXTRA_SENHA)){
-            email = intent.getStringExtra(EXTRA_EMAIL)
-            senha = intent.getStringExtra(EXTRA_SENHA)
+        if(intent.hasExtra(Usuario.TAG)){
+            usuario = intent.getSerializableExtra(Usuario.TAG) as Usuario
         }
     }
 
@@ -55,7 +51,18 @@ class ResumoLoginActivity : AppCompatActivity() {
     }
 
     private fun exibeDadosLogin(){
-        txtEmail.text = "Login: $email"
-        txtSenha.text = "Senha: $senha"
+        usuario?.let {
+            txtEmail.text = "Login: ${it.email}"
+            txtSenha.text = "Senha: ${it.senha}"
+        }
+    }
+
+    private fun configuraBotaoListaTarefas(){
+        val btnListaTarefas: Button = findViewById<Button>(R.id.activity_resumo_login_btn_lista_tarefas)
+        btnListaTarefas.setOnClickListener {
+            intent = Intent(this, TarefasActivity::class.java)
+            intent.putExtra(Usuario.TAG, usuario)
+            startActivity(intent)
+        }
     }
 }

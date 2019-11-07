@@ -11,9 +11,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.MainActivity" />
         <activity android:name=".ui.activity.CadastroActivity" />
-        <activity android:name=".ui.activity.ResumoCadastroActivity"></activity>
+        <activity android:name=".ui.activity.ResumoCadastroActivity" />
         <activity android:name=".ui.activity.LoginActivity" />
         <activity android:name=".ui.activity.ResumoLoginActivity" />
+        <activity android:name=".ui.activity.TarefasActivity" />
         <activity
             android:name=".ui.activity.SplashScreenActivity"
             android:screenOrientation="portrait"
@@ -24,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

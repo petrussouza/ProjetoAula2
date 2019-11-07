@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import school.cesar.projetoaula2.R
+import school.cesar.projetoaula2.dao.UsuarioDAO
 import school.cesar.projetoaula2.extension.isEmailValido
 import school.cesar.projetoaula2.model.Usuario
 
@@ -50,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
             valido = false
         }
         if(edtSenha.text.toString().trim().length < Usuario.TAMANHO_MINIMO_SENHA){
-            edtSenha.error = getString(R.string.msg_minimo_de_6_caracteres)
+            edtSenha.error = getString(R.string.msg_minimo_de_caracteres, Usuario.TAMANHO_MINIMO_SENHA)
             valido = false
         }
         return valido
@@ -67,9 +68,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun efetuarLogin(email: String, senha: String){
-        intent = Intent(this, ResumoLoginActivity::class.java)
-        intent.putExtra(ResumoLoginActivity.EXTRA_EMAIL, email)
-        intent.putExtra(ResumoLoginActivity.EXTRA_SENHA, senha)
-        startActivity(intent)
+        val usuario = UsuarioDAO.getInstance(this).getUsuarioEmailSenha(email, senha);
+        if(usuario != null){
+            intent = Intent(this, ResumoLoginActivity::class.java)
+            intent.putExtra(Usuario.TAG, usuario)
+            startActivity(intent)
+        }else{
+            edtEmail.error = getString(R.string.msg_email_e_ou_senha_invalido)
+            edtSenha.error = getString(R.string.msg_email_e_ou_senha_invalido)
+        }
     }
 }

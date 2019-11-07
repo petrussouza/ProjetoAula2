@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import school.cesar.projetoaula2.R
+import school.cesar.projetoaula2.dao.UsuarioDAO
 import school.cesar.projetoaula2.extension.isEmailValido
 import school.cesar.projetoaula2.model.Usuario
 import school.cesar.projetoaula2.util.CPFUtil
@@ -79,7 +80,7 @@ class CadastroActivity : AppCompatActivity() {
             valido = false
         }
         if(edtSenha.text.toString().trim().length < Usuario.TAMANHO_MINIMO_SENHA){
-            edtSenha.error = getString(R.string.msg_minimo_de_6_caracteres)
+            edtSenha.error = getString(R.string.msg_minimo_de_caracteres, Usuario.TAMANHO_MINIMO_SENHA)
             valido = false
         }
         if(!CPFUtil.validarCPF(edtCpf.text.toString())){
@@ -95,8 +96,20 @@ class CadastroActivity : AppCompatActivity() {
     }
 
     private fun criarConta(usuario: Usuario){
-        intent = Intent(this, ResumoCadastroActivity::class.java)
-        intent.putExtra(ResumoCadastroActivity.EXTRA_USUARIO, usuario)
-        startActivity(intent)
+        val usuarioDAO = UsuarioDAO.getInstance(this)
+        val usuarioLocalizado = usuarioDAO.buscarUsuario(usuario)
+        if(usuarioLocalizado == null) {
+            usuarioDAO.salvar(usuario)
+            intent = Intent(this, ResumoCadastroActivity::class.java)
+            intent.putExtra(Usuario.TAG, usuario)
+            startActivity(intent)
+        }else{
+            if(usuario.email.equals(usuarioLocalizado.email)){
+                edtEmail.error = getString(R.string.msg_email_ja_cadastrado)
+            }
+            if(usuario.cpf.equals(usuarioLocalizado.cpf)){
+                edtCpf.error = getString(R.string.msg_cpf_ja_cadastrado)
+            }
+        }
     }
 }

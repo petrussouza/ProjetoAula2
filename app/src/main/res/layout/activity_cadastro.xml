@@ -1,48 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorOrangeBackground"
     android:padding="16dp"
     tools:context=".ui.activity.CadastroActivity">
 
-
     <EditText
         android:id="@+id/activity_cadastro_edt_nome"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="textCapWords"
+        android:contentDescription="@string/nome"
         android:hint="@string/nome"
-        android:contentDescription="@string/nome"/>
+        android:inputType="textCapWords"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/activity_cadastro_edt_email"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:hint="@string/email"/>
+        app:layout_constraintEnd_toEndOf="@+id/activity_cadastro_edt_nome"
+        app:layout_constraintStart_toStartOf="@+id/activity_cadastro_edt_nome"
+        app:layout_constraintTop_toBottomOf="@+id/activity_cadastro_edt_nome" />
 
     <EditText
         android:id="@+id/activity_cadastro_edt_senha"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:contentDescription="@string/senha"
         android:hint="@string/senha"
-        android:contentDescription="@string/senha"/>
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/activity_cadastro_edt_email"
+        app:layout_constraintStart_toStartOf="@+id/activity_cadastro_edt_email"
+        app:layout_constraintTop_toBottomOf="@+id/activity_cadastro_edt_email" />
 
     <EditText
         android:id="@+id/activity_cadastro_edt_cpf"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/cpf"
         android:hint="@string/cpf"
         android:inputType="number"
-        android:contentDescription="@string/cpf"/>
+        app:layout_constraintEnd_toEndOf="@+id/activity_cadastro_edt_senha"
+        app:layout_constraintStart_toStartOf="@+id/activity_cadastro_edt_senha"
+        app:layout_constraintTop_toBottomOf="@+id/activity_cadastro_edt_senha" />
 
-    <Button android:id="@+id/activity_cadastro_btn_cadastrar"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/activity_cadastro_btn_cadastrar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/cadastrar"/>
-</LinearLayout>
+        android:background="@drawable/button_orange"
+        android:text="@string/cadastrar"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="@+id/activity_cadastro_edt_cpf"
+        app:layout_constraintStart_toStartOf="@+id/activity_cadastro_edt_cpf"
+        app:layout_constraintTop_toBottomOf="@+id/activity_cadastro_edt_cpf" />
+</androidx.constraintlayout.widget.ConstraintLayout>

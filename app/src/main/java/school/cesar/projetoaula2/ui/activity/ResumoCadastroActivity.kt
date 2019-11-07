@@ -1,7 +1,9 @@
 package school.cesar.projetoaula2.ui.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import school.cesar.projetoaula2.R
 import school.cesar.projetoaula2.model.Usuario
@@ -14,10 +16,6 @@ class ResumoCadastroActivity : AppCompatActivity() {
     private lateinit var txtEmail: TextView
     private lateinit var txtCpf: TextView
 
-    companion object{
-        var EXTRA_USUARIO = "usuario"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resumo_cadastro)
@@ -25,6 +23,7 @@ class ResumoCadastroActivity : AppCompatActivity() {
         carregarCamposTela()
         getExtraIntent()
         exibeDadosUsuario()
+        configuraBotaoListaTarefas()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -41,8 +40,8 @@ class ResumoCadastroActivity : AppCompatActivity() {
     }
 
     private fun getExtraIntent(){
-        if(intent.hasExtra(EXTRA_USUARIO)){
-            usuario = intent.getSerializableExtra(EXTRA_USUARIO) as Usuario
+        if(intent.hasExtra(Usuario.TAG)){
+            usuario = intent.getSerializableExtra(Usuario.TAG) as Usuario
         }
     }
 
@@ -57,6 +56,15 @@ class ResumoCadastroActivity : AppCompatActivity() {
             txtNome.text = "Nome: ${it.nome}"
             txtEmail.text = "Email: ${it.email}"
             txtCpf.text = "CPF: ${it.cpf}"
+        }
+    }
+
+    private fun configuraBotaoListaTarefas(){
+        val btnListaTarefas: Button = findViewById<Button>(R.id.activity_resumo_cadastro_btn_lista_tarefas)
+        btnListaTarefas.setOnClickListener {
+            intent = Intent(this, TarefasActivity::class.java)
+            intent.putExtra(Usuario.TAG, usuario)
+            startActivity(intent)
         }
     }
 }
