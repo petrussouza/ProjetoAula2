@@ -17,6 +17,12 @@ class TarefasActivity : AppCompatActivity() {
 
     private lateinit var usuario: Usuario;
     private var tarefas: MutableList<String> = mutableListOf();
+    private lateinit var adapter: RecyclerView.Adapter<TarefaAdapter.ViewHolder>
+
+    companion object{
+        val ACAO_FORMULARIO_INCLUIR = 0
+        val ACAO_FORMULARIO_ALTERAR = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +50,7 @@ class TarefasActivity : AppCompatActivity() {
     private fun configuraFabButton(){
         val fabAdicionaItem = findViewById<FloatingActionButton>(R.id.activity_todo_fab_adiciona_item)
         fabAdicionaItem.setOnClickListener {
-            exibeFormulario()
+            exibeFormulario(ACAO_FORMULARIO_INCLUIR)
         }
     }
 
@@ -60,30 +66,55 @@ class TarefasActivity : AppCompatActivity() {
 
     private fun configuraLista(){
         var lstTarefas = findViewById<RecyclerView>(R.id.activity_tarefas_lst_itens)
-        val adapter = TarefaAdapter(tarefas)
+        adapter = TarefaAdapter(tarefas)
         lstTarefas.adapter = adapter
     }
 
-    private fun exibeFormulario(){
-        val viewFormulario = LayoutInflater.from(this)
-            .inflate(R.layout.dialog_formulario_tarefa, null);
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.titulo_fomulario_todo_item))
-            .setView(viewFormulario)
-            .setPositiveButton(getString(R.string.cadastrar), { dialog, which ->
-                Toast.makeText(applicationContext,
-                    getString(R.string.msg_salvando), Toast.LENGTH_SHORT).show()
-                val edtAtividade = viewFormulario.findViewById<EditText>(R.id.dialog_formulario_tarefas_edt_tarefa)
-                salvarTarefa(edtAtividade.text.toString());
-            })
-        .setNegativeButton(getString(R.string.cancelar), null)
+    fun exibeFormulario(acaoFormulario: Int, posicao: Int? = null,  tarefa: String? = null) {
+        val viewFormulario = LayoutInflater.from(this).inflate(R.layout.dialog_formulario_tarefa, null);
+        val edtTarefa = viewFormulario.findViewById<EditText>(R.id.dialog_formulario_tarefas_edt_tarefa)
+        var alertDialog = AlertDialog.Builder(this)
+            .setView(viewFormulario);
+            if(acaoFormulario == ACAO_FORMULARIO_ALTERAR){
+                alertDialog.setTitle(getString(R.string.titulo_fomulario_todo_alterar_tarefa))
+                    .setPositiveButton(getString(R.string.alterar), { dialog, which ->
+                    Toast.makeText(applicationContext,
+                        getString(R.string.msg_salvando), Toast.LENGTH_SHORT).show()
+                    salvarTarefa(edtTarefa.text.toString(), posicao);
+                })
+                edtTarefa.setText(tarefa)
+            }else{
+                alertDialog.setTitle(getString(R.string.titulo_fomulario_todo_nova_tarefa))
+                    alertDialog.setPositiveButton(getString(R.string.cadastrar), { dialog, which ->
+                    Toast.makeText(applicationContext,
+                        getString(R.string.msg_salvando), Toast.LENGTH_SHORT).show()
+                    salvarTarefa(edtTarefa.text.toString());
+                })
+            }
+            alertDialog.setNegativeButton(getString(R.string.cancelar), null)
             .show();
     }
 
-    fun salvarTarefa(tarefa: String) {
+    fun exibeFormularioAlterar(posicao: Int){
+        exibeFormulario(ACAO_FORMULARIO_ALTERAR, posicao, tarefas[posicao])
+    }
+
+    fun salvarTarefa(tarefa: String, posicao: Int? = null) {
         if(!tarefas.contains(tarefa)) {
-            tarefas.add(tarefa)
+            if(posicao != null) {
+                tarefas[posicao] = tarefa
+            }else{
+                tarefas.add(tarefa)
+            }
             TarefaDAO.getInstance(this).salvar(usuario.indice, tarefas);
+        }else{
+            Toast.makeText(this, getString(R.string.msg_tarefa_ja_cadastrada), Toast.LENGTH_SHORT).show();
         }
+        adapter.notifyDataSetChanged()
+    }
+
+    fun removerTarefa(posicao: Int) {
+        tarefas.removeAt(posicao)
+        TarefaDAO.getInstance(this).salvar(usuario.indice, tarefas);
     }
 }

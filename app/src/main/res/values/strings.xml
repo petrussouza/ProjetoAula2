@@ -2,6 +2,7 @@
     <string name="app_name">Projeto Aula 2</string>
     <string name="cadastre_se">Cadastre-se</string>
     <string name="cadastrar">Cadastrar</string>
+    <string name="alterar">Alterar</string>
     <string name="cancelar">Cancelar</string>
     <string name="entrar">Entrar</string>
     <string name="nome">Nome</string>
@@ -10,13 +11,15 @@
     <string name="cpf">CPF</string>
     <string name="tarefa">Tarefa</string>
     <string name="lista_de_tarefas">Lista de tarefas</string>
+    <string name="excluir">Excluir</string>
 
     <string name="titulo_nova_conta">Nova Conta</string>
     <string name="titulo_resumo_cadastro">Resumo Cadastro</string>
     <string name="titulo_login">Login</string>
     <string name="titulo_resumo_login">Resumo Login</string>
     <string name="titulo_todo">Lista de Tarefas</string>
-    <string name="titulo_fomulario_todo_item">Nova Tarefa</string>
+    <string name="titulo_fomulario_todo_nova_tarefa">Nova Tarefa</string>
+    <string name="titulo_fomulario_todo_alterar_tarefa">Alterar Tarefa</string>
 
     <string name="msg_salvando">Salvando...</string>
     <string name="msg_efetuando_login">Efetuando Login...</string>
@@ -27,5 +30,6 @@
     <string name="msg_email_ja_cadastrado">E-mail já cadastrado!</string>
     <string name="msg_cpf_ja_cadastrado">Cpf já cadastrado!</string>
     <string name="msg_email_e_ou_senha_invalido">Email e/ou senha inválido(s)!</string>
+    <string name="msg_tarefa_ja_cadastrada">Já exite uma tarefa com essa descrição</string>
 
 </resources>
