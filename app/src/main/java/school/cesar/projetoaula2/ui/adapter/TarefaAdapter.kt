@@ -25,12 +25,11 @@ class TarefaAdapter(private val tarefas: MutableList<Tarefa>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: TarefaAdapter.ViewHolder, posicao: Int) {
         holder.tarefaItemTitulo.setText(tarefas.get(posicao).descricao);
         holder.tarefaItemDiaSemana.setText(tarefas.get(posicao).diaSemana);
+        holder.viewItem.setOnClickListener {
+            (context as TarefasActivity).exibeFormularioAlterar(tarefas[posicao], posicao)
+        }
         holder.viewItem.setOnCreateContextMenuListener { contextMenu, _, _ ->
             MenuInflater(context).inflate(R.menu.menu_tarefa_item, contextMenu)
-            contextMenu.findItem(R.id.menu_tarefa_item_alterar).setOnMenuItemClickListener {
-                (context as TarefasActivity).exibeFormularioAlterar(tarefas[posicao], posicao)
-                true
-            }
             contextMenu.findItem(R.id.menu_tarefa_item_excluir).setOnMenuItemClickListener {
                 (context as TarefasActivity).removerTarefa(posicao)
                 true
