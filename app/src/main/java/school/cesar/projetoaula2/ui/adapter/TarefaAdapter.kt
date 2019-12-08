@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import school.cesar.projetoaula2.R
+import school.cesar.projetoaula2.model.Tarefa
 import school.cesar.projetoaula2.ui.activity.TarefasActivity
 
-class TarefaAdapter(private val tarefas: MutableList<String>) : RecyclerView.Adapter<TarefaAdapter.ViewHolder>() {
+class TarefaAdapter(private val tarefas: MutableList<Tarefa>) : RecyclerView.Adapter<TarefaAdapter.ViewHolder>() {
 
     private lateinit var context: Context
 
@@ -22,16 +23,16 @@ class TarefaAdapter(private val tarefas: MutableList<String>) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: TarefaAdapter.ViewHolder, posicao: Int) {
-        holder.tarefaItemTitulo.setText(tarefas.get(posicao));
+        holder.tarefaItemTitulo.setText(tarefas.get(posicao).descricao);
+        holder.tarefaItemDiaSemana.setText(tarefas.get(posicao).diaSemana);
         holder.viewItem.setOnCreateContextMenuListener { contextMenu, _, _ ->
             MenuInflater(context).inflate(R.menu.menu_tarefa_item, contextMenu)
             contextMenu.findItem(R.id.menu_tarefa_item_alterar).setOnMenuItemClickListener {
-                (context as TarefasActivity).exibeFormularioAlterar(posicao)
+                (context as TarefasActivity).exibeFormularioAlterar(tarefas[posicao], posicao)
                 true
             }
             contextMenu.findItem(R.id.menu_tarefa_item_excluir).setOnMenuItemClickListener {
                 (context as TarefasActivity).removerTarefa(posicao)
-                notifyDataSetChanged()
                 true
             }
         }
@@ -43,7 +44,7 @@ class TarefaAdapter(private val tarefas: MutableList<String>) : RecyclerView.Ada
 
     class ViewHolder(var viewItem: View) : RecyclerView.ViewHolder(viewItem) {
         var tarefaItemTitulo: TextView = viewItem.findViewById<TextView>(R.id.tarefa_item_txt_titulo)
-
+        var tarefaItemDiaSemana: TextView = viewItem.findViewById<TextView>(R.id.tarefa_item_txt_dia_semana)
     }
 
 }

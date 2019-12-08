@@ -1,73 +1,87 @@
 package school.cesar.projetoaula2.dao
 
+import android.content.ContentValues
 import android.content.Context
-import android.content.SharedPreferences
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import android.database.Cursor
 import school.cesar.projetoaula2.model.Usuario
 
-class UsuarioDAO (val context: Context){
+class UsuarioDAO(context: Context): DataSource(context) {
 
-    companion object{
-        private var controleIndice = 0;
-        val PREFERENCE_USERS = "PREFERENCE_USERS"
+    companion object {
+        const val TABLE_NAME = "usuario"
+        //Columns
+        const val ID: String = "id"
+        const val NOME: String = "nome"
+        const val EMAIL: String = "email"
+        const val SENHA: String = "senha"
+        const val CPF: String = "cpf"
+        const val TIMESTAMP: String = "timestamp"
 
-        fun getInstance(context: Context) : UsuarioDAO {
-            return UsuarioDAO(context)
+        val SQL_SCRIPT_CREATE =
+            "CREATE TABLE if not exists " + TABLE_NAME + " (" +
+                    "${ID} integer PRIMARY KEY autoincrement," +
+                    "${NOME} varchar(40)," +
+                    "${EMAIL} varchar(30)," +
+                    "${SENHA} varchar(20)," +
+                    "${CPF} varchar(14)," +
+                    "${TIMESTAMP} integer" +
+                    ");"
+
+        val SQL_SCRIPT_DROP = "DROP TABLE IF EXISTS $TABLE_NAME;"
+    }
+
+    fun insertUsuario(usuario: Usuario) {
+        val values = ContentValues()
+        values.put(NOME, usuario.nome)
+        values.put(EMAIL, usuario.email)
+        values.put(SENHA, usuario.senha)
+        values.put(CPF, usuario.cpf)
+        values.put(TIMESTAMP, System.currentTimeMillis())
+        val idInserido = dbWrite.insert(TABLE_NAME, null, values);
+        usuario.id = idInserido.toInt()
+    }
+
+    fun buscarUsuario(usuario: Usuario) : Usuario? {
+        val cursor: Cursor = dbRead
+            .query(TABLE_NAME, arrayOf(ID, NOME, EMAIL, SENHA, CPF, TIMESTAMP), "${EMAIL}='${usuario.email}' OR ${CPF}='${usuario.cpf}'", null, null, null, null)
+        return montarUsuario(cursor)
+    }
+
+    fun getUsuarioEmail(email: String) : Usuario? {
+        val cursor: Cursor = dbRead
+            .query(TABLE_NAME, arrayOf(ID, NOME, EMAIL, SENHA, CPF, TIMESTAMP), "${EMAIL}='${email}'", null, null, null, null)
+        return montarUsuario(cursor)
+    }
+
+    fun updateUsuario(usuario: Usuario) {
+        val values = ContentValues()
+        values.put(NOME, usuario.nome)
+        values.put(EMAIL, usuario.email)
+        values.put(SENHA, usuario.senha)
+        values.put(CPF, usuario.cpf)
+        values.put(TIMESTAMP, System.currentTimeMillis())
+
+        dbWrite.update(TABLE_NAME, values, "${ID}=${usuario.id}", null)
+    }
+
+    fun removeUsuario(id: Int): Int {
+        return dbWrite.delete(TABLE_NAME, "${ID}=${id}", null)
+    }
+
+    private fun montarUsuario(cursor: Cursor): Usuario?{
+        var usuario: Usuario? = null
+        if(cursor.count > 0) {
+            cursor.moveToNext()
+            usuario = Usuario(
+                cursor.getInt(cursor.getColumnIndex(ID)),
+                cursor.getString(cursor.getColumnIndex(NOME)),
+                cursor.getString(cursor.getColumnIndex(EMAIL)),
+                cursor.getString(cursor.getColumnIndex(SENHA)),
+                cursor.getString(cursor.getColumnIndex(CPF))
+            );
         }
+        cursor.close()
+        return usuario
     }
 
-    private fun getSharedPreferences(): SharedPreferences{
-        return context.getSharedPreferences(PREFERENCE_USERS, Context.MODE_PRIVATE)
-    }
-
-    private fun getIndice(){
-        controleIndice = getSharedPreferences().getInt("controleIndice", 0)
-    }
-
-    fun salvar(usuario: Usuario){
-        getIndice()
-        var editor = getSharedPreferences().edit()
-        val gson = GsonBuilder().setPrettyPrinting().create()
-        val jsonUsuario: String = gson.toJson(usuario)
-        editor.putString("usuario_$controleIndice", jsonUsuario)
-        usuario.indice = controleIndice
-        controleIndice++
-        editor.putInt("controleIndice", controleIndice)
-        editor.commit()
-    }
-
-    private fun getUsuarios(): List<Usuario>{
-        getIndice()
-        var usuarios = mutableListOf<Usuario>();
-        val gson = Gson()
-        val sharedPreferences = getSharedPreferences()
-        for (i in 0..controleIndice) {
-            var jsonUsuario = sharedPreferences.getString("usuario_$i", null)
-            if(jsonUsuario != null){
-                var usuario : Usuario = gson.fromJson(jsonUsuario, Usuario::class.java)
-                usuario.indice = i
-                usuarios.add(usuario)
-            }
-        }
-        return usuarios;
-    }
-
-    fun buscarUsuario(usuario: Usuario): Usuario?{
-        for (usuarioAtual in getUsuarios()) {
-            if(usuario.cpf == usuarioAtual.cpf || usuario.email == usuarioAtual.email){
-                return  usuarioAtual;
-            }
-        }
-        return null;
-    }
-
-    fun getUsuarioEmailSenha(email :String, senha: String): Usuario?{
-        for (usuarioAtual in getUsuarios()) {
-            if(email == usuarioAtual.email && senha == usuarioAtual.senha){
-                return  usuarioAtual;
-            }
-        }
-        return null;
-    }
 }

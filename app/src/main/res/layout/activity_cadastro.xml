@@ -54,13 +54,26 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_cadastro_edt_senha" />
 
     <Button
+        android:id="@+id/activity_cadastro_btn_cancelar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_orange"
+        android:text="@string/cancelar"
+        android:layout_marginEnd="4dp"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/activity_cadastro_edt_cpf"
+        app:layout_constraintTop_toBottomOf="@+id/activity_cadastro_edt_cpf"
+        app:layout_constraintEnd_toStartOf="@+id/activity_cadastro_btn_cadastrar"/>
+
+    <Button
         android:id="@+id/activity_cadastro_btn_cadastrar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_orange"
         android:text="@string/cadastrar"
+        android:layout_marginStart="4dp"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="@+id/activity_cadastro_edt_cpf"
-        app:layout_constraintStart_toStartOf="@+id/activity_cadastro_edt_cpf"
+        app:layout_constraintStart_toEndOf="@+id/activity_cadastro_btn_cancelar"
         app:layout_constraintTop_toBottomOf="@+id/activity_cadastro_edt_cpf" />
 </androidx.constraintlayout.widget.ConstraintLayout>

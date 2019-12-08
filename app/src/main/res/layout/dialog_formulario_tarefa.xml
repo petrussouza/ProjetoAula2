@@ -18,4 +18,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+        android:id="@+id/dialog_formulario_tarefas_spn_dia_semana"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/dialog_formulario_tarefas_edt_tarefa"
+        app:layout_constraintStart_toStartOf="@+id/dialog_formulario_tarefas_edt_tarefa"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_formulario_tarefas_edt_tarefa" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
