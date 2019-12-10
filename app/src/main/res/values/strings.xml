@@ -14,6 +14,7 @@
     <string name="excluir">Excluir</string>
     <string name="distracao">Distração</string>
     <string name="mapa">Mapa</string>
+    <string name="my_app">MYAPP</string>
 
     <string name="titulo_nova_conta">Nova Conta</string>
     <string name="titulo_resumo_cadastro">Resumo Cadastro</string>
@@ -37,6 +38,7 @@
     <string name="msg_senha_primeira_letra_maiscula">Senha deve começar com a primeira letra maiúscula!</string>
     <string name="msg_senha_invalida">Senha inválida!</string>
     <string name="msg_tarefa_ja_cadastrada">Já exite uma tarefa com essa descrição</string>
+    <string name="msg_nao_fique_de_fora_utilize_o_aplicativo">Não fique de fora utilize o aplicativo!</string>
 
 
     <string-array name="dias_semana">

@@ -74,47 +74,8 @@ class MapaActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun callMap() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED
-            || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            val cesarSchool = LatLng(-8.059616, -34.8730747)
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(cesarSchool))
-
-        } else {
-            requestPermissions(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ), 1010
-            )
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when(requestCode) {
-            1010 -> {
-                if (grantResults.isNotEmpty() && checkAllPermissionAreGranted(grantResults)) {
-                    callMap()
-                }
-            }
-        }
-    }
-
-    private fun checkAllPermissionAreGranted(grantResults: IntArray) : Boolean {
-        var result = true
-        grantResults.forEach { grant ->
-            if (grant != PackageManager.PERMISSION_GRANTED) {
-                result = false
-            }
-        }
-
-        return result
+        val cesarSchool = LatLng(-8.059616, -34.8730747)
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(cesarSchool))
     }
 
     private fun parseAcademiasCidade(json: String){

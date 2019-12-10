@@ -19,12 +19,14 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var edtEmail: EditText
     private lateinit var edtSenha: EditText
+    private var cadastroRealizado = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         configuraActionBar()
         carregarCamposFormulario()
+        getExtraIntent()
         configuraBotaoCancelar()
         configuraBotaoEntrar()
         configurarValidacaoPoliticaSenha()
@@ -48,6 +50,12 @@ class LoginActivity : AppCompatActivity() {
         return true
     }
 
+    private fun getExtraIntent(){
+        if(intent.hasExtra(CadastroActivity.EXTRA_CADASTRO_REALIZADO)){
+            cadastroRealizado = intent.getBooleanExtra(CadastroActivity.EXTRA_CADASTRO_REALIZADO, false)
+        }
+    }
+
     private fun validarForm(): Boolean{
         var valido = true
         if(!edtEmail.text.toString().trim().isEmailValido()){
@@ -67,9 +75,13 @@ class LoginActivity : AppCompatActivity() {
     private fun configuraBotaoCancelar(){
         val btnCancelar = findViewById<Button>(R.id.activity_login_btn_cancelar)
         btnCancelar.setOnClickListener{
-            intent = Intent(this, MainActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
+            if(cadastroRealizado) {
+                intent = Intent(this, MainActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }else{
+                finish()
+            }
         }
     }
 

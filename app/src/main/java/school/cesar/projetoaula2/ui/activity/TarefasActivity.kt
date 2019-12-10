@@ -27,7 +27,6 @@ class TarefasActivity : AppCompatActivity() {
     }
 
     private lateinit var usuario: Usuario;
-    private var tarefas: MutableList<Tarefa> = mutableListOf();
     private lateinit var adapter: RecyclerView.Adapter<TarefaAdapter.ViewHolder>
     private lateinit var tarefaDAO: TarefaDAO
 
@@ -93,12 +92,12 @@ class TarefasActivity : AppCompatActivity() {
     }
 
     private fun getTarefas(){
-        tarefas = tarefaDAO.getTarefas(usuario.id!!);
+        usuario.tarefas = tarefaDAO.getTarefas(usuario.id!!);
     }
 
     private fun configuraLista(){
         var lstTarefas = findViewById<RecyclerView>(R.id.activity_tarefas_lst_itens)
-        adapter = TarefaAdapter(tarefas)
+        adapter = TarefaAdapter(usuario.tarefas)
         lstTarefas.adapter = adapter
     }
 
@@ -115,30 +114,40 @@ class TarefasActivity : AppCompatActivity() {
             spnDiaSemana.adapter = adapter
         }
 
-        var alertDialog = AlertDialog.Builder(this)
-            .setView(viewFormulario);
-            if(tarefa != null){
-                alertDialog.setTitle(getString(R.string.titulo_fomulario_todo_alterar_tarefa))
-                    .setPositiveButton(getString(R.string.alterar), { dialog, which ->
-                    Toast.makeText(applicationContext,
-                        getString(R.string.msg_salvando), Toast.LENGTH_SHORT).show()
-                    tarefa.descricao = edtTarefa.text.toString()
-                    tarefa.diaSemana = spnDiaSemana.getSelectedItem().toString()
-                    alterarTarefa(tarefa, posicao!!);
-                })
-                edtTarefa.setText(tarefa.descricao)
-                spnDiaSemana.setSelection(diasSemana.indexOf(tarefa.diaSemana))
-            }else{
-                alertDialog.setTitle(getString(R.string.titulo_fomulario_todo_nova_tarefa))
-                    alertDialog.setPositiveButton(getString(R.string.cadastrar), { dialog, which ->
-                    Toast.makeText(applicationContext,
-                        getString(R.string.msg_salvando), Toast.LENGTH_SHORT).show()
-                    val tarefa = Tarefa(null, edtTarefa.text.toString(), spnDiaSemana.getSelectedItem().toString())
-                    inserirTarefa(tarefa);
-                })
+        val builder = AlertDialog.Builder(this)
+            .setView(viewFormulario)
+            .setPositiveButton(android.R.string.ok, null)
+            .setNegativeButton(R.string.cancelar) { dialog, whichButton ->
             }
-            alertDialog.setNegativeButton(getString(R.string.cancelar), null)
-            .show();
+
+        if(tarefa != null){
+            builder.setTitle(R.string.titulo_fomulario_todo_alterar_tarefa)
+            builder.setPositiveButton(R.string.alterar, null)
+            edtTarefa.setText(tarefa.descricao)
+            spnDiaSemana.setSelection(diasSemana.indexOf(tarefa.diaSemana))
+        }else{
+            builder.setTitle(R.string.titulo_fomulario_todo_nova_tarefa)
+            builder.setPositiveButton(R.string.cadastrar, null)
+        }
+        val alertDialog = builder.create()
+        alertDialog.setOnShowListener {
+            val okButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            okButton.setOnClickListener {
+                if(validaTarefaForm(edtTarefa)) {
+                    if(tarefa != null) {
+                        tarefa.descricao = edtTarefa.text.toString()
+                        tarefa.diaSemana = spnDiaSemana.getSelectedItem().toString()
+                        alterarTarefa(tarefa, posicao!!)
+                    }else{
+                        val novaTarefa = Tarefa(null, edtTarefa.text.toString(), spnDiaSemana.getSelectedItem().toString())
+                        inserirTarefa(novaTarefa)
+                    }
+                    alertDialog.dismiss()
+                }
+            }
+        }
+        alertDialog.show()
+
     }
 
     fun exibeFormularioAlterar(tarefa: Tarefa, posicao: Int){
@@ -146,25 +155,34 @@ class TarefasActivity : AppCompatActivity() {
     }
 
     fun inserirTarefa(tarefa: Tarefa) {
-        tarefas.add(tarefa)
+        Toast.makeText(this, getString(R.string.msg_salvando), Toast.LENGTH_SHORT).show()
+        usuario.tarefas.add(tarefa)
         tarefaDAO.insertTarefa(tarefa, usuario.id!!);
         adapter.notifyDataSetChanged()
     }
 
     fun alterarTarefa(tarefa: Tarefa, posicao: Int) {
+        Toast.makeText(this, getString(R.string.msg_salvando), Toast.LENGTH_SHORT).show()
         if(posicao != null) {
-            tarefas[posicao] = tarefa
+            usuario.tarefas[posicao] = tarefa
         }else{
-            tarefas.add(tarefa)
+            usuario.tarefas.add(tarefa)
         }
         tarefaDAO.updateTarefa(tarefa, usuario.id!!);
-
         adapter.notifyItemChanged(posicao)
     }
 
+    private fun validaTarefaForm(edtTarefa: EditText): Boolean {
+        if(edtTarefa.text.toString().trim().equals("") ){
+            edtTarefa.error = "Preencha a tarefa";
+            return false
+        }
+        return true
+    }
+
     fun removerTarefa(posicao: Int) {
-        tarefaDAO.removeTarefa(tarefas[posicao].id!!, usuario.id!!);
-        tarefas.removeAt(posicao)
+        tarefaDAO.removeTarefa(usuario.tarefas[posicao].id!!, usuario.id!!);
+        usuario.tarefas.removeAt(posicao)
         adapter.notifyItemRemoved(posicao)
     }
 

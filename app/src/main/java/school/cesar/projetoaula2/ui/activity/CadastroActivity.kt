@@ -16,6 +16,10 @@ import school.cesar.projetoaula2.util.PoliticaSenhaUtil
 
 class CadastroActivity : AppCompatActivity() {
 
+    companion object{
+        val EXTRA_CADASTRO_REALIZADO = "cadastroRealizado"
+    }
+
     private lateinit var edtNome: EditText
     private lateinit var edtEmail: EditText
     private lateinit var edtSenha: EditText
@@ -56,9 +60,7 @@ class CadastroActivity : AppCompatActivity() {
     private fun configuraBotaoCancelar(){
         val btnCancelar = findViewById<Button>(R.id.activity_cadastro_btn_cancelar)
         btnCancelar.setOnClickListener{
-            intent = Intent(this, MainActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
+            finish()
         }
     }
 
@@ -114,6 +116,7 @@ class CadastroActivity : AppCompatActivity() {
         if(usuarioLocalizado == null) {
             usuarioDAO.insertUsuario(usuario)
             intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra(EXTRA_CADASTRO_REALIZADO, true)
             startActivity(intent)
         }else{
             if(usuario.email.equals(usuarioLocalizado.email)){

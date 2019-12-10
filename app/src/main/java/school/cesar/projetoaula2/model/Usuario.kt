@@ -9,6 +9,8 @@ data class Usuario (var id: Int?,
                     var senha: String,
                     val cpf: String): Serializable{
 
+    var tarefas: MutableList<Tarefa> = mutableListOf()
+
     companion object{
         val TAG = "usuario"
         val TAMANHO_MINIMO_SENHA = 6
